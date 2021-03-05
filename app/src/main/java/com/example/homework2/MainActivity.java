@@ -31,16 +31,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainTimeList = new ArrayList<String>();
+        if (savedInstanceState != null) {
+            mainTimeList = savedInstanceState.getStringArrayList("timeList");
+            addTimeList(mainTimeList);
+        } else {
+            mainTimeList = new ArrayList<String>();
+        }
 
         mainFragment = MainFragment.newInstance();
-
-        //fragmentManager = getSupportFragmentManager(); // Fragment Manager
-        //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        //fragmentTransaction.add(R.id.fragment, mainFragment);
-        //fragmentTransaction.addToBackStack(null);
-        //fragmentTransaction.commit();
     }
 
     public void addTimeList(ArrayList<String> al) {
@@ -55,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putStringArrayList("timeList", mainTimeList);
     }
 
     // Restores the activity state
@@ -70,31 +69,9 @@ public class MainActivity extends AppCompatActivity {
      */
     public void changeFragment(View view) {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            //Bundle bundle = new Bundle();
-            //System.out.println(mainTimeList.size());
-            //bundle.putStringArrayList("Timer", mainTimeList);
-            //bundle.putInt("num", 5);
-            //listFragment = new ListFragment();
-            //listFragment.setArguments(bundle);
             Intent intent = new Intent(this, ListActivity.class);
             intent.putExtra("Timer", mainTimeList);
             startActivity(intent);
         }
-        /**
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        TextView textView = (TextView) findViewById(R.id.button);
-        if (mainView) {
-            fragmentTransaction.replace(R.id.fragment, listFragment);
-            //fragmentTransaction.addToBackStack("mainFragment");
-            mainView = false;
-            textView.setText("Timer");
-        } else {
-            fragmentTransaction.replace(R.id.fragment, mainFragment);
-            //fragmentTransaction.addToBackStack("listFragment");
-            mainView = true;
-            textView.setText("List");
-        }
-        fragmentTransaction.commit();
-         */
     }
 }

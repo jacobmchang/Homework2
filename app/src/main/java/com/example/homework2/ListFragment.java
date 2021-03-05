@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class ListFragment extends Fragment {
 
     TextView listText;
-    ListView lv;
+    ArrayList<String> myList;
 
     public ListFragment() {
         // Required empty public constructor
@@ -27,34 +27,31 @@ public class ListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        /**
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            displayList = bundle.getStringArrayList("Timer");
-        }
-        if (displayList != null) {
-            for (int i = 0; i < displayList.size(); i++) {
-                System.out.println(displayList.get(i));
-            }
-        }
-         */
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-        lv = view.findViewById(R.id.lapButton);
         listText = view.findViewById(R.id.textView2);
-        listText.setText("");
 
-        //if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        //    updateDisplay(((MainActivity) getActivity()).getTimeList());
-        //}
+        if (savedInstanceState != null) {
+            myList = savedInstanceState.getStringArrayList("timeList");
+            updateDisplay(myList);
+        } else {
+            myList = new ArrayList<String>();
+        }
 
         return view;
         // Display list here
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList("timeList", myList);
+    }
+
     public void updateDisplay(ArrayList<String> list) {
+        myList = list;
         String total = "";
         for (int i = 0; i < list.size(); i++) {
             total += (i + 1) + ". " + list.get(i) + "\n";

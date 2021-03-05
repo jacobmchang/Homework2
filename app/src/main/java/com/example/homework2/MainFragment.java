@@ -53,9 +53,21 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             timer.setTime(savedInstanceState.getInt("hour"),
                     savedInstanceState.getInt("minute"), savedInstanceState.getInt("second"));
             timerText.setText(savedInstanceState.getCharSequence("time"));
+            if (running) {
+                start.setText("Stop");
+                start.setBackgroundColor(Color.RED);
+                if (asyncTask.getStatus() != AsyncTask.Status.RUNNING) {
+                    asyncTask = new TimerAsyncTask();
+                    asyncTask.execute();
+                }
+            } else {
+                start.setText("Start");
+                start.setBackgroundColor(Color.GREEN);
+            }
         } else {
             running = false;
             start.setBackgroundColor(Color.GREEN);
+            timerText.setText("00:00:00");
         }
 
         return view;
@@ -81,6 +93,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         //if (asyncTask.getStatus() != AsyncTask.Status.RUNNING) {
         //    asyncTask.cancel(true);
         //}
+        //asyncTask.cancel(true);
     }
 
     @Override
